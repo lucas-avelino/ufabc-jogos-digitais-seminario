@@ -31,11 +31,18 @@ public class PointOfInterestManager : MonoBehaviour
 
     private void OnPointOfInterestClicked(PointOfInterest pointOfInterest)
     {
+        if (_chatManager.IsDialogActive)
+        {
+            Debug.Log("Cannot interact with Point of Interest while a dialog is active.");
+            return;
+        }
+
         OnPointOfInterestClickedEvent?.Invoke(pointOfInterest, OnArrivedAtPointOfInterest);
     }
 
     private void OnArrivedAtPointOfInterest(PointOfInterest pointOfInterest)
     {
+
         if (pointOfInterest.ItemToGive != null)
         {
             _inventoryManager.AddItem(pointOfInterest.ItemToGive);
@@ -44,7 +51,7 @@ public class PointOfInterestManager : MonoBehaviour
 
         if (pointOfInterest.Talker != null)
         {
-            _chatManager.RegisterDialog(pointOfInterest.Talker.GetCurrentDialog());
+            _chatManager.RegisterDialog(pointOfInterest.Talker);
         }
 
         OnArrivedAtPointOfInterestEvent?.Invoke(pointOfInterest);

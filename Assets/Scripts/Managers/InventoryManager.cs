@@ -79,6 +79,13 @@ public class InventoryManager : MonoBehaviour
             && entry.quantity >= quantity;
     }
 
+    public bool HasItem(string itemId, int quantity = 1)
+    {
+        return itemId != null
+            && _items.TryGetValue(itemId, out var entry)
+            && entry.quantity >= quantity;
+    }
+
     /// <summary>Returns the current stack count for <paramref name="item"/>, or 0 if not present.</summary>
     public int GetItemCount(Item item)
     {

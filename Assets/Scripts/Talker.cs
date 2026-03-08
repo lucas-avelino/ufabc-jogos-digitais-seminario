@@ -16,6 +16,17 @@ public class Talker : MonoBehaviour
         return dialogDict[_currentDialogKey];
     }
 
+    public bool HasDialog()
+    {
+        Dictionary<string, List<ChatMessage>> dialogDict = _dialogs.ToDictionary();
+        return dialogDict.ContainsKey(_currentDialogKey);
+    }
+
+    public void SetCurrentDialogKey(string key)
+    {
+        _currentDialogKey = key;
+    }
+
     [Serializable]
     public class KeyValuePair<K, V>
     {

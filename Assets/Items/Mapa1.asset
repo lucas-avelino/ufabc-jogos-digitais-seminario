@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c29d027de5ed646a19f6697d2f20ac, type: 3}
+  m_Name: Mapa1
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  <Id>k__BackingField: mapa1
+  <DisplayName>k__BackingField: "Peda\xE7o de mapa"
+  <Description>k__BackingField: 
+  <Icon>k__BackingField: {fileID: -1283089701, guid: 26f1c86b9dd949c49a213eea719a0a66, type: 3}

@@ -4,8 +4,8 @@ using Unity.VisualScripting;
 [Serializable]
 public class ChatMessage
 {
-    public string Text;
     public string Title;
+    public string Text;
 
     public ChatMessage(string text, string title = "")
     {

@@ -15,6 +15,8 @@ public class MapZoomArea : MonoBehaviour
     [SerializeField] private bool _showGizmo = true;
 
     [SerializeField] public bool _isZoomed = true;
+    [SerializeField] private Talker _talker;
+    public Talker Talker => _talker;
 
     public event Action OnClicked;
 

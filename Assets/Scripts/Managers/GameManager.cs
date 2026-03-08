@@ -104,6 +104,11 @@ public class GameManager : MonoBehaviour
                 {
                     _areasItemsContainerByName[containerName].SetActive(true);
                 }
+
+                if (zoomArea.Talker != null && zoomArea.Talker.HasDialog())
+                {
+                    _chatManager.RegisterDialog(zoomArea.Talker);
+                }
             });
         });
     }
