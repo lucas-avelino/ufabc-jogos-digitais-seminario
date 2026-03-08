@@ -25,6 +25,8 @@ public class CameraZoomController : MonoBehaviour
     public bool IsTransitioning => _isTransitioning;
     private bool _isZoomedIn      = false;
     public bool IsZoomedIn => _isZoomedIn;
+    public float ZoomDuration => _zoomDuration;
+    public AnimationCurve ZoomCurve => _zoomCurve;
     private DepthOfField _dof;
 
     private List<Action> OnZoomEnd = new List<Action>();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,8 @@ public class GameManager : MonoBehaviour
     public bool IsZoomedIn => _currentZoomArea != null;
     public bool ChatActive => _chatManager != null && _chatManager.gameObject.activeSelf;
 
+    [SerializeField] private MapZoomArea _startingZoomArea;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,6 +43,7 @@ public class GameManager : MonoBehaviour
         _pointOfInterestManager.OnPointOfInterestClickedEvent += OnInterestPointClicked;
 
         StartCoroutine(DisableItems());
+        
     }
 
     // coroutine to set all areas items visibility to false at the start of the game
@@ -53,6 +57,13 @@ public class GameManager : MonoBehaviour
             _areasItemsContainerByName[container.name] = container;
             container.SetActive(false);
         }
+        yield return new WaitForEndOfFrame();
+
+        if (_startingZoomArea != null)
+        {
+            OnAreaClicked(_startingZoomArea);
+        }
+
     }
 
     void OnAreaClicked(MapZoomArea zoomArea)
