@@ -8,6 +8,9 @@ public class PointOfInterest : MonoBehaviour
     public Vector3 CameraTargetPos => transform.position + _cameraOffset;
     public event Action<PointOfInterest> OnClicked;
 
+    [SerializeField] private Item _itemToGive;
+    public Item ItemToGive => _itemToGive;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnMouseDown()
     {

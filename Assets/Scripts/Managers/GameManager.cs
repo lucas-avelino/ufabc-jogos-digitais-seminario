@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private PointOfInterestManager _pointOfInterestManager;
     [SerializeField] private CameraZoomController _cameraZoomController;
+    [SerializeField] private InventoryManager _inventoryManager;
 
     [Header("Zoom Areas")]
     [SerializeField] private List<MapZoomArea> _mapZoomAreas;
@@ -35,9 +36,18 @@ public class GameManager : MonoBehaviour
 
         _pointOfInterestManager.OnPointOfInterestClickedEvent += OnInterestPointClicked;
 
+        StartCoroutine(DisableItems());
+    }
+
+    // coroutine to set all areas items visibility to false at the start of the game
+    private IEnumerator<WaitForEndOfFrame> DisableItems()
+    {
+        // Wait for the end of the frame to ensure all Start() methods have been called
+        yield return new WaitForEndOfFrame();
+
         foreach (var container in _areasItemsContainer)
         {
-            _areasItemsContainerByName.Add(container.name, container);
+            _areasItemsContainerByName[container.name] = container;
             container.SetActive(false);
         }
     }
@@ -123,9 +133,16 @@ public class GameManager : MonoBehaviour
         
     }
 
-    void OnInterestPointClicked(string pointName, Vector3 pointPosition)
+    void OnInterestPointClicked(PointOfInterest pointOfInterest)
     {
-        _player.GoTo(pointPosition, () => {});
+        _player.GoTo(pointOfInterest.CameraTargetPos, () =>
+        {
+            if (pointOfInterest.ItemToGive != null)
+            {
+                _inventoryManager.AddItem(pointOfInterest.ItemToGive);
+                pointOfInterest.gameObject.SetActive(false);
+            }
+        });
     }
 
 

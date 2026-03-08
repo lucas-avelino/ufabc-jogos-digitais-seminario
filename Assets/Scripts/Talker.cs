@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Talker : MonoBehaviour
 {
-    [SerializeField] private DictionaryWrapper<string, List<string>> _dialogs;
+    [SerializeField] private DictionaryWrapper<string, List<ChatMessage>> _dialogs;
 
     [SerializeField] string _currentDialogKey;
 
-    public event Action<List<string>> OnTalkerClicked;
+    public event Action<List<ChatMessage>> OnTalkerClicked;
 
     public void OnMouseDown()
     {
-        Dictionary<string, List<string>> dialogDict = _dialogs.ToDictionary();
+        Dictionary<string, List<ChatMessage>> dialogDict = _dialogs.ToDictionary();
         OnTalkerClicked?.Invoke(dialogDict[_currentDialogKey]);
     }
 

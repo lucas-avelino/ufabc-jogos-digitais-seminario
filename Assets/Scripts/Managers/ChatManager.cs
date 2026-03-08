@@ -9,7 +9,7 @@ public class ChatManager : MonoBehaviour
     [SerializeField] private GameObject _world;
      
     private Talker[] _talkers;
-    Queue<string> _currentDialogs = new Queue<string>(); 
+    Queue<ChatMessage> _currentDialogs = new Queue<ChatMessage>(); 
    
     public Action _onDialogComplete;
 
@@ -28,8 +28,8 @@ public class ChatManager : MonoBehaviour
     {
         if (_currentDialogs.Count > 0)
         {
-            string nextDialog = _currentDialogs.Dequeue();
-            _chatBox.Show(nextDialog);
+            ChatMessage nextDialog = _currentDialogs.Dequeue();
+            _chatBox.Show(nextDialog.Text, nextDialog.Title);
         }
         else
         {
@@ -38,9 +38,9 @@ public class ChatManager : MonoBehaviour
         }
     }
 
-    public void RegisterDialog(List<string> dialogs)
+    public void RegisterDialog(List<ChatMessage> dialogs)
     {
-        _currentDialogs = new Queue<string>(dialogs);
+        _currentDialogs = new Queue<ChatMessage>(dialogs);
         OnChatBoxNext();
     }
 
