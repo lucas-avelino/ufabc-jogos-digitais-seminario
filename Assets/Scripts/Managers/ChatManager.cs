@@ -6,22 +6,23 @@ public class ChatManager : MonoBehaviour
 {
 
     [SerializeField] private ChatBox _chatBox;
-    [SerializeField] private GameObject _world;
-     
-    private Talker[] _talkers;
     Queue<ChatMessage> _currentDialogs = new Queue<ChatMessage>(); 
    
     public Action _onDialogComplete;
+    bool _isChatBoxVisible = false;
+    bool _isDialogActive => _isChatBoxVisible;
 
     void Start()
     {
-        _talkers = _world.GetComponentsInChildren<Talker>();
-        foreach (var talker in _talkers)
-        {
-            talker.OnTalkerClicked += RegisterDialog;
-        }
-        _chatBox.Hide();
         _chatBox.OnChatBoxNext += OnChatBoxNext;
+    }
+
+    private void OnPointOfInterestClicked(PointOfInterest pointOfInterest)
+    {
+        if (pointOfInterest.Talker != null && !_isDialogActive)
+        {
+            RegisterDialog(pointOfInterest.Talker.GetCurrentDialog());
+        }
     }
 
     void OnChatBoxNext()
@@ -30,19 +31,27 @@ public class ChatManager : MonoBehaviour
         {
             ChatMessage nextDialog = _currentDialogs.Dequeue();
             _chatBox.Show(nextDialog.Text, nextDialog.Title);
+            _isChatBoxVisible = true;
         }
         else
         {
             _chatBox.Hide();
+            _isChatBoxVisible = false;
             _onDialogComplete?.Invoke();
         }
     }
 
     public void RegisterDialog(List<ChatMessage> dialogs)
     {
-        if (_chatBox.gameObject.activeSelf) return;
         _currentDialogs = new Queue<ChatMessage>(dialogs);
         OnChatBoxNext();
+    }
+
+    public void CancelDialogs()
+    {
+        _currentDialogs.Clear();
+        _chatBox.Hide();
+        _isChatBoxVisible = false;
     }
 
 }

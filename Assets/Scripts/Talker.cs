@@ -10,10 +10,10 @@ public class Talker : MonoBehaviour
 
     public event Action<List<ChatMessage>> OnTalkerClicked;
 
-    public void OnMouseDown()
+    public List<ChatMessage> GetCurrentDialog()
     {
         Dictionary<string, List<ChatMessage>> dialogDict = _dialogs.ToDictionary();
-        OnTalkerClicked?.Invoke(dialogDict[_currentDialogKey]);
+        return dialogDict[_currentDialogKey];
     }
 
     [Serializable]

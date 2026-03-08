@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PointOfInterest : MonoBehaviour
@@ -10,6 +11,12 @@ public class PointOfInterest : MonoBehaviour
 
     [SerializeField] private Item _itemToGive;
     public Item ItemToGive => _itemToGive;
+
+    [SerializeField] private Talker _talker;
+    public Talker Talker => _talker;
+
+    [SerializeField] private bool _backToMap;
+    public bool BackToMap => _backToMap;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnMouseDown()

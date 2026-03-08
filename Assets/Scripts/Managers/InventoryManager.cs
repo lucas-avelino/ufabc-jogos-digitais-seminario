@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField] private PointOfInterestManager _pointOfInterestManager;
     private readonly Dictionary<string, (Item item, int quantity)> _items = new();
-
     /// <summary>Fired after an item is added, passing the item and the amount added.</summary>
     public event Action<Item, int> OnItemAdded;
 

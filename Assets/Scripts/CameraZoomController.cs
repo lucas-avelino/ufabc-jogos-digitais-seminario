@@ -14,6 +14,8 @@ public class CameraZoomController : MonoBehaviour
     [SerializeField] private Volume _blurVolume;
     [SerializeField] [Range(0f, 1f)] private float _maxBlurRadius = 0.6f;
 
+    [SerializeField] private int _pixelsPerUnit = 64;
+
     [SerializeField] private Vector3 _overviewPosition;
     [SerializeField] private float   _overviewOrthoSize = 10f;
     [SerializeField] private bool    _allowEscapeToZoomOut      = true;
@@ -22,6 +24,7 @@ public class CameraZoomController : MonoBehaviour
     private bool _isTransitioning = false;
     public bool IsTransitioning => _isTransitioning;
     private bool _isZoomedIn      = false;
+    public bool IsZoomedIn => _isZoomedIn;
     private DepthOfField _dof;
 
     private List<Action> OnZoomEnd = new List<Action>();
@@ -94,7 +97,7 @@ public class CameraZoomController : MonoBehaviour
         }
 
         _camera.transform.position = toPos;
-        _camera.orthographicSize   = targetOrthoSize;
+        _camera.orthographicSize   = SnapToPixelPerfect(targetOrthoSize);
         SetBlur(0f);
 
         _isZoomedIn      = !isZoomOut;
@@ -112,5 +115,16 @@ public class CameraZoomController : MonoBehaviour
         if (_dof == null) return;
         _dof.active = radius > 0f;
         _dof.gaussianMaxRadius.value = radius;
+    }
+
+    // Snaps an orthographic size to the nearest pixel-perfect value.
+    // Pixel-perfect: screenHeight == 2 * orthoSize * PPU * integerZoom
+    private float SnapToPixelPerfect(float orthoSize)
+    {
+        float screenHeight = Screen.height;
+        if (screenHeight <= 0) return orthoSize;
+        float zoom = screenHeight / (2f * _pixelsPerUnit * orthoSize);
+        float snappedZoom = Mathf.Max(1f, Mathf.Round(zoom));
+        return screenHeight / (2f * _pixelsPerUnit * snappedZoom);
     }
 }

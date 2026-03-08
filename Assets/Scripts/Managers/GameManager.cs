@@ -1,6 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PointOfInterestManager _pointOfInterestManager;
     [SerializeField] private CameraZoomController _cameraZoomController;
     [SerializeField] private InventoryManager _inventoryManager;
+    [SerializeField] private ChatManager _chatManager;
 
     [Header("Zoom Areas")]
     [SerializeField] private List<MapZoomArea> _mapZoomAreas;
@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button _backButton;
 
     private MapZoomArea _currentZoomArea;
+    public bool IsZoomedIn => _currentZoomArea != null;
+    public bool ChatActive => _chatManager != null && _chatManager.gameObject.activeSelf;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
         _backButton.gameObject.SetActive(true);
         _currentZoomArea = zoomArea;
         
-        _player.GoTo(zoomArea.CameraTargetPos, () =>
+        _player.GoTo(zoomArea.PlayerTargetPos, () =>
         {
             _cameraZoomController.ZoomToArea(zoomArea.CameraTargetPos, zoomArea.TargetOrthoSize, () =>
             {
@@ -125,6 +128,7 @@ public class GameManager : MonoBehaviour
         }
         _currentZoomArea = null;
         _cameraZoomController.ZoomOut();
+        _chatManager.CancelDialogs();
     }
 
     // Update is called once per frame
@@ -133,25 +137,21 @@ public class GameManager : MonoBehaviour
         
     }
 
-    void OnInterestPointClicked(PointOfInterest pointOfInterest)
+    void OnInterestPointClicked(PointOfInterest pointOfInterest, Action<PointOfInterest> onArrival)
     {
-        void onArrival()
-        {
-            if (pointOfInterest.ItemToGive != null)
-            {
-                _inventoryManager.AddItem(pointOfInterest.ItemToGive);
-                pointOfInterest.gameObject.SetActive(false);
-            }
-        }
-
         if (Vector3.Distance(_player.transform.position, pointOfInterest.CameraTargetPos) < 0.1f)
         {
-            onArrival();
+            onArrival?.Invoke(pointOfInterest);
             return;
         }
 
-        _player.GoTo(pointOfInterest.CameraTargetPos, onArrival);
+        _player.GoTo(pointOfInterest.CameraTargetPos, () => {
+            onArrival?.Invoke(pointOfInterest);
+            if (pointOfInterest.BackToMap)
+            {
+                OnBackButtonClicked();
+            }
+        });
     }
-
 
 }
