@@ -4058,7 +4058,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1021111215
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5361,6 +5361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   _chatBox: {fileID: 1021111216}
+  _inventoryManager: {fileID: 1372852209}
 --- !u!1 &1399803959
 GameObject:
   m_ObjectHideFlags: 0
@@ -124755,24 +124756,39 @@ MonoBehaviour:
         Text: Muito obrigada!
       - Title: command
         Text: CasaMandela unlocked
+      - Title: has
+        Text: dende dende_primeiro_contato
       - Title: goto
         Text: 2
     - Keys: 2
       Values:
-      - Title: Nokwanele Balizulu
-        Text: "V\xE1 em frente, Tata, fique \xE0 vontade. Ser\xE1 uma honra para
-          Madiba."
-      - Title: Tata
-        Text: Muito obrigada!
       - Title: has
         Text: dende dende
-    - Keys: dende
-      Values:
       - Title: Nokwanele Balizulu
         Text: "V\xE1 em frente, Tata, fique \xE0 vontade. Ser\xE1 uma honra para
           Madiba."
       - Title: Tata
         Text: Muito obrigada!
+    - Keys: dende
+      Values:
+      - Title: Tata
+        Text: "Trouxe um presente pra voc\xEA!"
+      - Title: Nokwanele Balizulu
+        Text: Ora, que gentileza, querida. O que seria?
+      - Title: Tata
+        Text: "Um dend\xEA! Ele\u2026 acabou caindo na minha cabe\xE7a quando passei
+          pelo dendezeiro. Achei que teria algum significado importante."
+      - Title: take
+        Text: dende
+      - Title: Nokwanele Balizulu
+        Text: "Ah, Tata, que gentileza a sua. O dend\xEA traz press\xE1gios importantes
+          para nosso povo. Agrade\xE7o pelo presente, querida."
+      - Title: goto
+        Text: 2
+    - Keys: dende_primeiro_contato
+      Values:
+      - Title: Tata
+        Text: "Ali\xE1s..."
       - Title: has
         Text: dende dende
   _currentDialogKey: initial

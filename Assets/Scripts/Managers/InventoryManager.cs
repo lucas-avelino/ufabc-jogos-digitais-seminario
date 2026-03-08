@@ -71,6 +71,18 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
+    public bool RemoveItem(string itemId, int quantity = 1)
+    {
+        if (itemId == null || !_items.ContainsKey(itemId))
+        {
+            Debug.LogWarning($"[InventoryManager] Tried to remove item with ID '{itemId}' that is not in the inventory.");
+            return false;
+        }
+
+        var item = _items[itemId].item;
+        return RemoveItem(item, quantity);
+    }
+
     /// <summary>Returns <c>true</c> if the inventory contains at least <paramref name="quantity"/> of <paramref name="item"/>.</summary>
     public bool HasItem(Item item, int quantity = 1)
     {

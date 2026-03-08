@@ -41,11 +41,25 @@ public class ChatManager : MonoBehaviour
             if (nextDialog.Title == "has")
             {
                 var item = nextDialog.Text.Split(' ');
-                var hasItem = _inventoryManager.HasItem(item[0], int.Parse(item[1]));
+                var hasItem = _inventoryManager.HasItem(item[0]);
                 if(hasItem)
+                {
                     GoTo(item[1]);
+                    RegisterDialog(_currentTalker);
+                }
                 
-                OnChatBoxNext();
+                return;
+            }
+
+            if (nextDialog.Title == "take")
+            {
+                var item = nextDialog.Text;
+                if (_inventoryManager.HasItem(item))
+                {
+                    _inventoryManager.RemoveItem(item);
+                    OnChatBoxNext();
+                }
+                
                 return;
             }
 
