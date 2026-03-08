@@ -40,6 +40,7 @@ public class ChatManager : MonoBehaviour
 
     public void RegisterDialog(List<ChatMessage> dialogs)
     {
+        if (_chatBox.gameObject.activeSelf) return;
         _currentDialogs = new Queue<ChatMessage>(dialogs);
         OnChatBoxNext();
     }

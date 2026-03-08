@@ -135,14 +135,22 @@ public class GameManager : MonoBehaviour
 
     void OnInterestPointClicked(PointOfInterest pointOfInterest)
     {
-        _player.GoTo(pointOfInterest.CameraTargetPos, () =>
+        void onArrival()
         {
             if (pointOfInterest.ItemToGive != null)
             {
                 _inventoryManager.AddItem(pointOfInterest.ItemToGive);
                 pointOfInterest.gameObject.SetActive(false);
             }
-        });
+        }
+
+        if (Vector3.Distance(_player.transform.position, pointOfInterest.CameraTargetPos) < 0.1f)
+        {
+            onArrival();
+            return;
+        }
+
+        _player.GoTo(pointOfInterest.CameraTargetPos, onArrival);
     }
 
 
