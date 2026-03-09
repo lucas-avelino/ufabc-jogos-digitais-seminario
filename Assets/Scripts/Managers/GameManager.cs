@@ -67,10 +67,7 @@ public class GameManager : MonoBehaviour
         {
             OnAreaClicked(_startingZoomArea);
         }
-
-
-        yield return new WaitForSeconds(5f);
-        EndGame();
+        
     }
 
     void OnAreaClicked(MapZoomArea zoomArea)
