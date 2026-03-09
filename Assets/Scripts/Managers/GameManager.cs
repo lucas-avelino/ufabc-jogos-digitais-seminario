@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MapZoomArea _startingZoomArea;
     [SerializeField] private Player _madoda;
     [SerializeField] private Player _barco;
+    [SerializeField] private GameObject _endGameScreen;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -173,9 +174,9 @@ public class GameManager : MonoBehaviour
         _player.GoTo(_barco.transform.position, () =>
         {
             _player.transform.SetParent(_barco.gameObject.transform);
-            _barco.GoTo(new Vector3(100, -2, 0f), () =>
+            _barco.GoTo(new Vector3(20, -2, 0f), () =>
             {
-                
+                _endGameScreen.SetActive(true);
             });
         });
 
