@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
         {
             OnAreaClicked(_startingZoomArea);
         }
-        
     }
 
     void OnAreaClicked(MapZoomArea zoomArea)
@@ -166,7 +165,7 @@ public class GameManager : MonoBehaviour
         _pointOfInterestManager.EndGame();
         _chatManager.CancelDialogs();
 
-        _madoda.GoTo(_barco.transform.position, () =>
+        _madoda.GoTo(_barco.transform.position + new Vector3(0.2f, 0, 0), () =>
         {
             _madoda.transform.SetParent(_barco.gameObject.transform);
         });
