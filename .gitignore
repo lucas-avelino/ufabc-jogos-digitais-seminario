@@ -1,7 +1,7 @@
 # Unity generated files
 [Ll]ibrary/
 [Tt]emp/
-[Bb]uild/
+
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
@@ -21,8 +21,7 @@ UserSettings/
 /Library/
 /Temp/
 /Obj/
-/Build/
-/Builds/
+
 /Logs/
 /MemoryCaptures/
 /UserSettings/
