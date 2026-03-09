@@ -7,6 +7,7 @@ public class ChatManager : MonoBehaviour
 
     [SerializeField] private ChatBox _chatBox;
     [SerializeField] private InventoryManager _inventoryManager;
+    [SerializeField] private ScreenFlashManager _screenFlashManager;
     Queue<ChatMessage> _currentDialogs = new Queue<ChatMessage>(); 
    
     public Action _onDialogComplete;
@@ -51,6 +52,27 @@ public class ChatManager : MonoBehaviour
                 return;
             }
 
+            if (nextDialog.Title == "hasAll")
+            {
+                var items = nextDialog.Text.Split(' ');
+                var hasAllItems = true;
+                for (int i = 0; i < items.Length - 1; i++)
+                {
+                    if (!_inventoryManager.HasItem(items[i]))
+                    {
+                        hasAllItems = false;
+                        break;
+                    }
+                }
+                if(hasAllItems)
+                {
+                    GoTo(items[items.Length - 1]);
+                    RegisterDialog(_currentTalker);
+                }
+                
+                return;
+            }
+
             if (nextDialog.Title == "take")
             {
                 var item = nextDialog.Text;
@@ -60,6 +82,28 @@ public class ChatManager : MonoBehaviour
                     OnChatBoxNext();
                 }
                 
+                return;
+            }
+
+            if (nextDialog.Title == "give")
+            {
+                var item = nextDialog.Text;
+                _inventoryManager.AddItem(item);
+                OnChatBoxNext();
+                return;
+            }
+
+            if (nextDialog.Title == "flash")
+            {
+                _screenFlashManager.Flash();
+                OnChatBoxNext();
+                return;
+            }
+
+            if (nextDialog.Title == "end")
+            {
+                var gm = GameObject.Find("GameManager");
+                gm.GetComponent<GameManager>().EndGame();
                 return;
             }
 

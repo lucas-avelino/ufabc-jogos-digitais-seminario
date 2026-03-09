@@ -40,6 +40,17 @@ public class InventoryManager : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    public void AddItem(string itemId, int quantity = 1)
+    {
+        // use resources to find the item ScriptableObject by its ID
+        var item = Resources.Load<Item>($"Items/{itemId}");
+        if (item == null)        {
+            Debug.LogWarning($"[InventoryManager] Tried to add item with ID '{itemId}' that does not exist in Resources/Items.");
+            return;
+        }
+        AddItem(item, quantity);
+    }
+
     /// <summary>
     /// Removes <paramref name="quantity"/> of <paramref name="item"/> from the inventory.
     /// Returns <c>true</c> on success, <c>false</c> if the item or enough quantity is not present.

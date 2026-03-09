@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +30,8 @@ public class GameManager : MonoBehaviour
     public bool ChatActive => _chatManager != null && _chatManager.gameObject.activeSelf;
 
     [SerializeField] private MapZoomArea _startingZoomArea;
+    [SerializeField] private Player _madoda;
+    [SerializeField] private Player _barco;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,7 +51,7 @@ public class GameManager : MonoBehaviour
     }
 
     // coroutine to set all areas items visibility to false at the start of the game
-    private IEnumerator<WaitForEndOfFrame> DisableItems()
+    private IEnumerator DisableItems()
     {
         // Wait for the end of the frame to ensure all Start() methods have been called
         yield return new WaitForEndOfFrame();
@@ -64,6 +68,9 @@ public class GameManager : MonoBehaviour
             OnAreaClicked(_startingZoomArea);
         }
 
+
+        yield return new WaitForSeconds(5f);
+        EndGame();
     }
 
     void OnAreaClicked(MapZoomArea zoomArea)
@@ -92,7 +99,7 @@ public class GameManager : MonoBehaviour
             area.gameObject.SetActive(false);
         }
 
-        _backButton.gameObject.SetActive(true);
+        //_backButton.gameObject.SetActive(true);
         _currentZoomArea = zoomArea;
         
         _player.GoTo(zoomArea.PlayerTargetPos, () =>
@@ -133,7 +140,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        _backButton.gameObject.SetActive(false);
+        //_backButton.gameObject.SetActive(false);
         foreach (var area in _mapZoomAreas)
         {
             area.gameObject.SetActive(true);
@@ -147,10 +154,35 @@ public class GameManager : MonoBehaviour
         _chatManager.CancelDialogs();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void EndGame()
     {
-        
+        foreach (var area in _mapZoomAreas)
+        {
+            area.gameObject.SetActive(false);
+        }
+
+        foreach (var container in _areasItemsContainer)
+        {
+            container.SetActive(false);
+        }
+
+        _pointOfInterestManager.EndGame();
+        _chatManager.CancelDialogs();
+
+        _madoda.GoTo(_barco.transform.position, () =>
+        {
+            _madoda.transform.SetParent(_barco.gameObject.transform);
+        });
+
+        _player.GoTo(_barco.transform.position, () =>
+        {
+            _player.transform.SetParent(_barco.gameObject.transform);
+            _barco.GoTo(new Vector3(100, -2, 0f), () =>
+            {
+                
+            });
+        });
+
     }
 
     void OnInterestPointClicked(PointOfInterest pointOfInterest, Action<PointOfInterest> onArrival)

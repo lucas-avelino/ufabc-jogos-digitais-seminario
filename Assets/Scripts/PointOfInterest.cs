@@ -18,6 +18,9 @@ public class PointOfInterest : MonoBehaviour
     [SerializeField] private bool _backToMap;
     public bool BackToMap => _backToMap;
 
+    [SerializeField] private bool _isClickableOutsideZoom = false;
+    public bool IsClickableOutsideZoom => _isClickableOutsideZoom;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnMouseDown()
     {

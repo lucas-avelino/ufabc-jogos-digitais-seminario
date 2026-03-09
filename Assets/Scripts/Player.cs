@@ -17,13 +17,20 @@ public class Player : MonoBehaviour
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
-        sprite = anim.gameObject.GetComponent<SpriteRenderer>();
+        if (anim != null)
+        {
+            sprite = anim.gameObject.GetComponent<SpriteRenderer>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        anim.SetBool("isWalking", _isMoving);
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", _isMoving);
+        }
+        
         if (_isMoving)
         {
             MoveTowardsTarget();
@@ -39,18 +46,21 @@ public class Player : MonoBehaviour
         }
 
         _targetPosition = position;
-        float angle = Vector3.Angle(_targetPosition, transform.position);
-        
-        //Checa se a posição do target está à esquerda ou à direita do jogador
-        //Se estiver à esquerda, flipa o sprite para a esquerda (a original está para a direita)
-        if(_targetPosition.x < transform.position.x) sprite.flipX = true;
-        else sprite.flipX = false;
 
-        
-        //Checa o ângulo entre a posição atual e o alvo. Se ele estiver entre 45° e 135°, o avatar fica de lado (isSided = true)
-        //Caso contrário, ela continua de frente (isSided = false)
-        if(angle < 45f || angle > 135f) anim.SetBool("isSided", false);
-        else anim.SetBool("isSided", true);
+        if (anim != null){
+            float angle = Vector3.Angle(_targetPosition, transform.position);
+            
+            //Checa se a posição do target está à esquerda ou à direita do jogador
+            //Se estiver à esquerda, flipa o sprite para a esquerda (a original está para a direita)
+            if(_targetPosition.x < transform.position.x) sprite.flipX = true;
+            else sprite.flipX = false;
+
+            
+            //Checa o ângulo entre a posição atual e o alvo. Se ele estiver entre 45° e 135°, o avatar fica de lado (isSided = true)
+            //Caso contrário, ela continua de frente (isSided = false)
+            if(angle < 45f || angle > 135f) anim.SetBool("isSided", false);
+            else anim.SetBool("isSided", true);
+        }
 
         _onArrivalCallback = onArrival;
         _isMoving = true;

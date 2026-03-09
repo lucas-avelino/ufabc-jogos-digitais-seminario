@@ -1,13 +1,14 @@
 using System;
+using System.Data.Common;
 using UnityEngine;
 
 public class PointOfInterestManager : MonoBehaviour
 {
     [SerializeField] private PointOfInterest[] _pointsOfInterest;
     [SerializeField] private GameObject _world;
-
     [SerializeField] private ChatManager _chatManager;
     [SerializeField] private InventoryManager _inventoryManager;
+    [SerializeField] private CameraZoomController _cameraZoomController;
 
     public event Action<PointOfInterest, Action<PointOfInterest>> OnPointOfInterestClickedEvent;
     private event Action<PointOfInterest> OnArrivedAtPointOfInterestEvent;
@@ -29,8 +30,22 @@ public class PointOfInterestManager : MonoBehaviour
         }
     }
 
+    public void EndGame()
+    {
+        foreach (var pointOfInterest in _pointsOfInterest)
+        {
+            pointOfInterest.GetComponentInChildren<Collider2D>().enabled = false;
+        }
+    }
+
     private void OnPointOfInterestClicked(PointOfInterest pointOfInterest)
     {
+        if (!pointOfInterest.IsClickableOutsideZoom && !_cameraZoomController.IsZoomedIn)
+        {
+            Debug.Log($"Point of Interest '{pointOfInterest.name}' is not clickable outside of zoom.");
+            return;
+        }
+
         if (_chatManager.IsDialogActive)
         {
             Debug.Log("Cannot interact with Point of Interest while a dialog is active.");
